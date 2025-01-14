@@ -1,0 +1,89 @@
+{% extends "base.html" %} 
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+<br></br>
+<div class="d-flex align-items-center justify-content-end p-3 text-white" style="background-color: white;">
+  <img src="{{ current_user.picture }}" alt="User Picture" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; border: 0.05px solid black;">
+  <div class="dropdown">
+    <button class="btn btn-light dropdown-toggle d-flex align-items-center" type="button" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      {{ current_user.mal_username }}
+    </button>
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+      <a class="dropdown-item" href="/">Share Profile</a>
+      <a class="dropdown-item" href="/logout">Logout</a>
+      <a class="dropdown-item" href="/">About</a>
+      <a class="dropdown-item" href="/">Donate</a>
+      
+    </div>
+  </div>
+</div>
+
+
+<br>
+<p>Welcome to Weebli</p>
+<p>Lets learn more about your <s>trash</s> amazing anime taste...</p>
+<br>
+
+<div id="top-genres"> 
+  <h2>Your Top Genres</h2>
+  {{ favorite_genres }}
+
+  <br></br>
+
+  <p>Favorite genre combinations</p>
+</div>
+
+<div id="user-comparison"> 
+  <h2>Weeb Rating</h2>
+  <h3>Obscurity</h3>
+  Your anime taste is more obscure than 
+  <h3>Otaku Knowledge</h3>
+  You've watched more anime than 
+  </div>
+
+<div id="favorite-studios">
+    <h2>Your Favorite Studios</h2>
+    Highest rated studios 
+</div>
+
+<div id="by-the-decades"> 
+    <h2>Anime by the Decades</h2>
+    {{ release_date_frequency }}
+    <p>Your favorite anime for each decade</p>
+    </div>
+
+<div id="rating-tendency">
+</div>
+
+<div id="most-obscure"></div>
+    <h2>Your Most Obscure Anime</h2>
+    {{ least_popular }}
+    </div>
+
+<div id="share-profile"> 
+    <h2>Share your Taste Profile</h2>
+</div>
+
+<div id="recommendations">
+  <h2>Recommendations</h2>
+  Because you liked
+  <select id="animeSelect" name="anime_mal_Id" onchange="getRecommendations()">
+    {% for anime_mal_Id, title in anime_list %}
+    <option value="{{ anime_mal_Id }}">
+      {{ title }}
+    </option>
+  {% endfor %}
+  </select>:
+</div>
+
+<div id="recommendationsResult" style="display: none;">
+  <div id="recommendationsList"></div>
+</div>
+
+
+<script src="{{ url_for('static', filename='index.js') }}"></script>
+{% endblock %}
+

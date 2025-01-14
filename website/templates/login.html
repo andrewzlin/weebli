@@ -1,0 +1,90 @@
+{% extends "base.html" %} 
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <!-- Background Elements -->
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+    
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Logo Section -->
+         <div class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100">
+                <defs>
+                <linearGradient id="textGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#7CC9F0"/>
+                    <stop offset="100%" style="stop-color:#5EAED9"/>
+                </linearGradient>
+                </defs>
+                
+                <!-- Playful graphs -->
+                <path d="M40 60 Q50 40 60 55" stroke="#7CC9F0" fill="none" stroke-width="3" stroke-linecap="round"/>
+                <path d="M65 65 Q75 35 85 50" stroke="#7CC9F0" fill="none" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+                
+                <!-- Text with softer, rounded font -->
+                <text x="100" y="63" font-family="Quicksand, Arial" font-size="38" font-weight="600" fill="url(#textGradient1)">weebli</text>
+                
+                <!-- Decorative elements -->
+                <circle cx="250" cy="45" r="4" fill="#7CC9F0"/>
+                <circle cx="260" cy="35" r="2" fill="#7CC9F0" opacity="0.6"/>
+                <circle cx="270" cy="45" r="3" fill="#7CC9F0" opacity="0.4"/>
+            </svg>
+          </div>
+      
+
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Left Panel -->
+            <div class="login-panel">
+                <div class="welcome-text">
+                    <h1>Welcome to Weebli!</h1>
+                    <p>Learn more about your anime taste and get curated reccomendations using the newest technology with weebli.</p>
+                </div>
+                
+                <form method="POST" class="login-form">
+                    <button type="submit" class="mal-button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="icon">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14"/>
+                        </svg>
+                        Login with MyAnimeList
+                    </button>
+                </form>
+
+                <div class="features">
+                    <div class="feature-item">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-text">Detailed viewing insights</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✨</div>
+                        <div class="feature-text">Personalized recommendations</div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-text">Track your watching goals</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel -->
+            <div class="anime-showcase">
+                <div class="showcase-overlay"></div>
+                <img src="/static/picture.jpg" alt="Anime characters collage" style="opacity: 0.5;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer-section">
+    <p>
+        <a href="/about" style="text-decoration: none; color: black;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">About</a> | 
+        <a href="/privacy" style="text-decoration: none; color: black;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Privacy</a> | 
+        <a href="/donate" style="text-decoration: none; color: black;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Donate</a>
+    </p>
+</footer>
+
+
+
+{% endblock %}
