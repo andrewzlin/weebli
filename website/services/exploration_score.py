@@ -1,70 +1,54 @@
-from .. import db
-from .prompts import FIND_GENRES, FIND_THEMES
-from openai import OpenAI
-import heapq
-import datetime
-import statistics
+from .prompts import FIND_GENRES
+import json
+import requests
+from requests_cache import CachedSession
 from collections import Counter
-# from itertools import islice
-import os 
+import os
+from openai import OpenAI
 from dotenv import load_dotenv
 from pydantic import BaseModel
+import statistics
+import datetime
+import heapq
 load_dotenv()
-
-class GenreExamples(BaseModel):
-    title : str
-class Genre(BaseModel):
-    genre : str
-    examples : list[GenreExamples]
-
-class TopGenres(BaseModel):
-    genres : list[Genre]
 
 class ExplorationScore:
     def __init__(self, user):
         self.user = user 
         self.user_anime_list = [ua for ua in user.anime_list if ua.status != 'Plan to Watch'] 
         self.anime_list = [ua.anime for ua in self.user_anime_list]
-        self.user_manga_list = user.manga_list
         self.client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
-        
-    
+        self.session = CachedSession(backend='sqlite', cache_name='api_cache')
+
     def favorite_anime_genres(self):
         """Returns a JSON of a user's favorite genres and 3 animes for each genre"""
+        cache_key = f"favorite_anime_genres_{self.user.id}"
+        if cache_key in self.session.cache:
+            return json.loads(self.session.cache[cache_key])
 
         completion = self.client.beta.chat.completions.parse(
             model="gpt-4o-2024-08-06",
             messages=[
                 {"role": "system", "content": FIND_GENRES},
-                {"role": "user", "content": [anime.title for anime in self.anime_list]},
+                {"role": "user", "content": ", ".join([anime.title for anime in self.anime_list])},
             ],
-            response_format=TopGenres,
+            response_format={"type" : "json_object"}
         )
 
-        top_genres = completion.choices[0].message.parsed
-
-
-        # genres = [genre for anime in self.anime_list for genre in anime.genres]
-        # genre_counts = Counter(genres)
-        # top_genres = genre_counts.most_common(10)
-        # top_anime_per_genre = {}
-        # for genre, _ in top_genres:
-        #     anime_in_genre = list(islice((anime for anime in self.anime_list if genre in anime.genres), 3))
-  
-        #     top_anime_per_genre[genre] = anime_in_genre
+        top_genres = json.loads(completion.choices[0].message.content)
+        self.session.cache[cache_key] = json.dumps(top_genres)
         return top_genres
 
     def release_date_frequency(self):
         """Returns a dictionary of the year started and the number of animes released in that year"""
-        year_counts = {}
+        year_counts = Counter()
         for anime in self.anime_list:
             date = anime.start_date
             year = datetime.datetime.strptime(date, '%Y-%m-%d').year
-            if year in year_counts:
-                year_counts[year] += 1
-            else:
-                year_counts[year] = 1
-        return year_counts
+            year_counts[year] += 1
+        return dict(year_counts)
+    
+    # ... rest of the code remains the same ...
     
     
 

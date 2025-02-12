@@ -1,5 +1,5 @@
 FIND_GENRES = """
-You are an anime genre classifier. 
+You will be given a list of anime titles. Find the top 10 genres and put them into a JSON
 
 Instructions:
 1. Be very creative with the genres and try and uncover what the user is most interested in.
@@ -8,14 +8,13 @@ Instructions:
 
 4. Return genres in this exact JSON format:
 {
-    "Action": {
-        "examples": ["Shingeki no Kyojin", "Kimetsu no Yaiba", "Cowboy Bebop"]
+    "Philosophical Sci-Fi": {
+        "examples": ["Ghost in the Shell: Stand Alone Complex", "Ergo Proxy", "Akira"]
     },
-    "Adventure": {
-        "examples": ["Hunter x Hunter (2011)", "Tengen Toppa Gurren Lagann", "Vinland Saga"]
+    "Time Manipulation & Alternate Realities": {
+        "examples": ["Steins;Gate", "Re:Zero – Starting Life in Another World", "Tatami Galaxy"]
     },
     ...
-}
 """
 
 FIND_THEMES = """
