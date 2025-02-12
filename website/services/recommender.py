@@ -15,7 +15,6 @@ pinecone = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 index_name = os.getenv("PINECONE_INDEX_NAME")
 
-ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 BASE_URL = "https://api.myanimelist.net/v2"
 
 ANIME_FIELDS = [
@@ -42,8 +41,8 @@ class Recommender:
         self.client = client
         self.base_url = BASE_URL
 
-        self.access_token = ACCESS_TOKEN
         self.user = user
+        self.access_token = user.mal_access_token
         self.user_list = [ua.anime.title for ua in user.anime_list]
 
         self.anime_fields = ANIME_FIELDS
@@ -110,8 +109,8 @@ class Recommender:
         else: 
             content = Anime.query.filter_by(title=title).first()
             if content:
-                id = content.mal_id
-                search_data = self.get_details(id, namespace)
+                mal_id = content.mal_id
+                search_data = self.get_details(mal_id, namespace)
 
                 related_titles = [anime['node']['title'] for anime in search_data.get('related_anime', [])]
 

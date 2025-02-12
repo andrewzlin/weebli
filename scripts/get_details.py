@@ -30,14 +30,14 @@ def countdown_timer(seconds: int) -> None:
         print(f"{remaining} seconds left", end='\r')
         time.sleep(1)
 
-def make_request(endpoint: str, params: Dict[str, str]) -> Dict[str, Any]:
+def make_request(access_token, endpoint: str, params: Dict[str, str]) -> Dict[str, Any]:
     """Make an API request with retry logic for timeouts."""
     while True:
         try:
             url = f"{BASE_URL}/{endpoint}"
             response = requests.get(
                 url,
-                headers={'Authorization': f'Bearer {ACCESS_TOKEN}'},
+                headers={'Authorization': f'Bearer {access_token}'},
                 params=params,
                 timeout=3
             )
@@ -49,13 +49,14 @@ def make_request(endpoint: str, params: Dict[str, str]) -> Dict[str, Any]:
             print("Request timed out, retrying in 5 minutes")
             countdown_timer(300)
 
-def get_details(content_type: str, id_list: List[int]) -> List[Dict]:
+def get_details(content_type: str, id_list: List[int], access_token=ACCESS_TOKEN) -> List[Dict]:
     """Fetch details for anime or manga."""
     fields = ANIME_FIELDS if content_type == "anime" else MANGA_FIELDS
     descriptions = []
     
     for counter, item_id in enumerate(id_list, 1):
         data = make_request(
+            access_token, 
             f"{content_type}/{item_id}",
             {"fields": ",".join(fields)}
         )

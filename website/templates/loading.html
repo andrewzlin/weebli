@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h2>We are updating your anime list. Please wait...</h2>
+    <p>This should only take a few moments.</p>
+
+    <script>
+        $(document).ready(function() {
+            $.post("/update-user-lists", function(response) {
+                if (response.status === "success") {
+                    window.location.href = "/";
+                } else {
+                    alert("Error: " + response.message);
+                    window.location.href = "/login";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

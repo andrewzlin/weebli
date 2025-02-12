@@ -67,6 +67,7 @@ class UserManga(db.Model):
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
+    client_id = db.Column(db.Integer, unique=True)
     mal_username = db.Column(db.String(150), unique=True)
     mal_access_token = db.Column(db.String(500))
     mal_refresh_token = db.Column(db.String(500))

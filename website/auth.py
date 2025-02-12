@@ -92,23 +92,37 @@ def mal_callback():
 
         db.session.commit()
 
-        MALClient(current_user).update_user_lists() 
         
         login_user(user, remember=True)
-        return redirect(url_for('views.home'))
+        return redirect(url_for('auth.loading'))
         
     except requests.exceptions.RequestException as e:
         flash(f'Authentication failed: {str(e)}', category='error')
         return redirect(url_for('auth.login'))
+    
+@auth.route('/auth.loading')
+@login_required
+def loading():
+    return render_template('loading.html')
 
+@auth.route('/update-user-lists', methods=['POST'])
+@login_required
+def update_user_lists():
+    try:
+        populate_user = MALClient(current_user)
+        populate_user.update_user_lists() 
+        return {'status' : 'success'}
+    except Exception as e:
+        return "Login failed"
 
 @auth.route('/logout')
 @login_required
 def logout(): 
-    User.query.filter_by(id=current_user.id).delete()
+    # user_to_logout = User.query.get(current_user.id)
+    # db.session.delete(user_to_logout)
+    # db.session.commit()
     logout_user()
     session.clear()
     flash("Successfully logged out", category='success')
     return redirect(url_for('auth.login'))
-
 

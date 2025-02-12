@@ -10,7 +10,7 @@ class MALClient:
         self.user_id = current_user.id
         self.headers = {'Authorization': f'Bearer {self.access_token}'}
         self.base_url = "https://api.myanimelist.net/v2/users/@me"
-
+         
     def get_anime_list(self):
         """Fetch user anime list"""
         url = f'{self.base_url}/animelist'
@@ -58,7 +58,7 @@ class MALClient:
         for item in anime_data:
             anime = Anime.query.filter_by(mal_id=item['node']['id']).first()
             if not anime:
-                details = get_details("anime", [item['node']['id']])[0]['node']
+                details = get_details("anime", [item['node']['id']], self.access_token)[0]['node']
                 print(details.get('genres'))
                 print(details.get('studios'))
                 print(details.get('related_anime'))

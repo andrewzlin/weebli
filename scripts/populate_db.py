@@ -6,6 +6,7 @@ from .get_mal_list import get_mal_list
 from typing import List, Dict
 from website.models import db, User, UserAnime, Anime, Manga, UserManga
 import json
+import os
 
 app = create_app()
 
@@ -50,16 +51,22 @@ def fetch_details(content_type : str, limit: int = 5) -> List[Dict]:
     # Get detailed information for each anime
     return get_details(content_type, set(item['node']['id'] for item in all_items))
 
-def populate_anime_database(limit: int = 5) -> None:
+def populate_anime_database(limit: int = 500) -> None:
     """
     Populate the database with anime data from MAL.
     """
-    print("Fetching data from MAL API...")
 
-    
-    anime_data = fetch_details("anime", limit)
-    with open('anime_data.json', 'w') as f:
-        json.dump(anime_data, f, indent=4)
+    anime_data_file = 'anime_data.json'
+    if os.path.exists(anime_data_file):
+        print("Using existing data file")
+        with open(anime_data_file, 'r') as f:
+            anime_data = json.load(f)
+    else:
+        print("Fetching data from MAL API...")
+        anime_data = fetch_details("anime", limit)
+        with open('anime_data.json', 'w') as f:
+            json.dump(anime_data, f, indent=4)
+            
     with app.app_context():
         print(f"Processing {len(anime_data)} anime entries...")
         existing_anime_ids = {anime.mal_id for anime in Anime.query.with_entities(Anime.mal_id).all()}

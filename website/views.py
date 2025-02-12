@@ -5,6 +5,7 @@ import requests
 from .services.recommender import Recommender
 from .services.exploration_score import ExplorationScore
 from .services.populate_user import MALClient
+import openai
 
 views = Blueprint('views', __name__)
 
@@ -62,4 +63,18 @@ def add_to_plan():
         )
         if response.status_code == 200:
             print(f'{selected_anime_mal_id} has been added to your anime plan_to_watch list')
+
+@views.route('/why-reccomendation')
+@login_required
+def why_reccomendation():
+    return "hello"
+    
+
+
+@views.route('/refresh')
+@login_required
+def refresh():
+    client = MALClient(current_user)
+    client.update_user_lists()
+    return "Success!!" 
 

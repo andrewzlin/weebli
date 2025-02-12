@@ -1,4 +1,4 @@
-/* Reset & Base Styles */
+/* Base Styles */
 * {
     margin: 0;
     padding: 0;
@@ -12,7 +12,7 @@ body {
     min-height: 100vh;
 }
 
-/* Container & Background */
+/* Login Page Styles */
 .login-container {
     min-height: 100vh;
     position: relative;
@@ -45,7 +45,6 @@ body {
     z-index: -1;
 }
 
-/* Content Layout */
 .content {
     width: 100%;
     max-width: 1400px;
@@ -54,15 +53,12 @@ body {
     gap: 1.5rem;
 }
 
-/* Logo */
 .logo {
     width: 280px;
     margin: 0 auto;
     margin-bottom: 2rem;
-    
 }
 
-/* Main Grid */
 .main-grid {
     display: grid;
     grid-template-columns: 1fr 1.2fr;
@@ -74,7 +70,6 @@ body {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
-/* Login Panel */
 .login-panel {
     padding: 3rem;
     display: flex;
@@ -96,7 +91,6 @@ body {
     font-size: 1.1rem;
 }
 
-/* Login Button */
 .mal-button {
     width: 100%;
     padding: 1rem 1.5rem;
@@ -119,12 +113,6 @@ body {
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
-.mal-button .icon {
-    width: 1.5rem;
-    height: 1.5rem;
-}
-
-/* Features */
 .features {
     display: flex;
     flex-direction: column;
@@ -141,10 +129,6 @@ body {
     transition: transform 0.2s;
 }
 
-.feature-item:hover {
-    transform: translateX(4px);
-}
-
 .feature-icon {
     font-size: 1.5rem;
 }
@@ -154,7 +138,6 @@ body {
     color: #4B5563;
 }
 
-/* Anime Showcase */
 .anime-showcase {
     position: relative;
     height: 100%;
@@ -166,6 +149,7 @@ body {
     width: 100%;
     height: auto;
     object-fit: cover;
+    opacity: 0.5;
 }
 
 .showcase-overlay {

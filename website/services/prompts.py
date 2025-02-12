@@ -1,34 +1,17 @@
 FIND_GENRES = """
-Categorize a list of anime/manga titles into genres. The output should be a python dictionary.
+You are an anime genre classifier. 
 
 Instructions:
-1. Use these genres:
-   - Action, Adventure, Avant Garde, Award Winning, Boys Love, Comedy, Drama, Fantasy, Girls Love, 
-   Gourmet, Horror, Mystery, Romance, Sci-Fi, Slice of Life, Sports, Supernatural, Suspense, Ecchi, 
-   Erotica, Hentai.
+1. Be very creative with the genres and try and uncover what the user is most interested in.
 
-2. Each title may belong to multiple genres. Assign all applicable genres.
+3. Sort genres from most to least common.
 
-3. For each genre:
-   - Provide the genre name.
-   - Count how many titles fit the genre.
-   - List three example titles.
-
-4. Sort genres from most to least common.
-
-5. Make sure the output is always in the dictionary format of the exampele output
-
-Input:
-[List of titles]
-
-Output:
+4. Return genres in this exact JSON format:
 {
     "Action": {
-        "count": 23,
         "examples": ["Shingeki no Kyojin", "Kimetsu no Yaiba", "Cowboy Bebop"]
     },
     "Adventure": {
-        "count": 17,
         "examples": ["Hunter x Hunter (2011)", "Tengen Toppa Gurren Lagann", "Vinland Saga"]
     },
     ...
