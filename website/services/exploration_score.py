@@ -22,22 +22,31 @@ class ExplorationScore:
 
     def favorite_anime_genres(self):
         """Returns a JSON of a user's favorite genres and 3 animes for each genre"""
-        cache_key = f"favorite_anime_genres_{self.user.id}"
-        if cache_key in self.session.cache:
-            return json.loads(self.session.cache[cache_key])
+        genres = [genre for anime in self.anime_list for genre in anime.genres]
+        genre_counts = Counter(genres)
+        top_genres = genre_counts.most_common(10)
+        top_anime_per_genre = {}
+        for genre, _ in top_genres:
+            anime_in_genre = list(islice((anime for anime in self.anime_list if genre in anime.genres), 3))
+        top_anime_per_genre[genre] = anime_in_genre
 
-        completion = self.client.beta.chat.completions.parse(
-            model="gpt-4o-2024-08-06",
-            messages=[
-                {"role": "system", "content": FIND_GENRES},
-                {"role": "user", "content": ", ".join([anime.title for anime in self.anime_list])},
-            ],
-            response_format={"type" : "json_object"}
-        )
+        return top_anime_per_genre
+        # cache_key = f"favorite_anime_genres_{self.user.id}"
+        # if cache_key in self.session.cache:
+        #     return json.loads(self.session.cache[cache_key])
 
-        top_genres = json.loads(completion.choices[0].message.content)
-        self.session.cache[cache_key] = json.dumps(top_genres)
-        return top_genres
+        # completion = self.client.beta.chat.completions.parse(
+        #     model="gpt-4o-2024-08-06",
+        #     messages=[
+        #         {"role": "system", "content": FIND_GENRES},
+        #         {"role": "user", "content": ", ".join([anime.title for anime in self.anime_list])},
+        #     ],
+        #     response_format={"type" : "json_object"}
+        # )
+
+        # top_genres = json.loads(completion.choices[0].message.content)
+        # self.session.cache[cache_key] = json.dumps(top_genres)
+        # return top_genres
 
     def release_date_frequency(self):
         """Returns a dictionary of the year started and the number of animes released in that year"""
@@ -47,10 +56,6 @@ class ExplorationScore:
             year = datetime.datetime.strptime(date, '%Y-%m-%d').year
             year_counts[year] += 1
         return dict(year_counts)
-    
-    # ... rest of the code remains the same ...
-    
-    
 
     
     def genre_diversity_score(self):
