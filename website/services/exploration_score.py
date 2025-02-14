@@ -1,7 +1,6 @@
 from .prompts import FIND_GENRES
 import json
 import requests
-from requests_cache import CachedSession
 from collections import Counter
 import os
 from openai import OpenAI
@@ -10,6 +9,7 @@ from pydantic import BaseModel
 import statistics
 import datetime
 import heapq
+from itertools import islice
 load_dotenv()
 
 class ExplorationScore:
@@ -18,19 +18,19 @@ class ExplorationScore:
         self.user_anime_list = [ua for ua in user.anime_list if ua.status != 'Plan to Watch'] 
         self.anime_list = [ua.anime for ua in self.user_anime_list]
         self.client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
-        self.session = CachedSession(backend='sqlite', cache_name='api_cache')
 
     def favorite_anime_genres(self):
-        """Returns a JSON of a user's favorite genres and 3 animes for each genre"""
+        """Returns a dictionary of a user's favorite genres and 3 animes for each genre"""
         genres = [genre for anime in self.anime_list for genre in anime.genres]
         genre_counts = Counter(genres)
         top_genres = genre_counts.most_common(10)
         top_anime_per_genre = {}
         for genre, _ in top_genres:
             anime_in_genre = list(islice((anime for anime in self.anime_list if genre in anime.genres), 3))
-        top_anime_per_genre[genre] = anime_in_genre
 
-        return top_anime_per_genre
+            top_anime_per_genre[genre] = anime_in_genre
+        return top_genres
+    
         # cache_key = f"favorite_anime_genres_{self.user.id}"
         # if cache_key in self.session.cache:
         #     return json.loads(self.session.cache[cache_key])
